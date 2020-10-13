@@ -5,6 +5,5 @@ RUN go build -o shrtnr
 
 FROM alpine:3.12
 EXPOSE 8080
-ENV LINKS_HOME /links
-COPY --from=build /app/shrtnr /shrtnr
 ENTRYPOINT ["/shrtnr"]
+COPY --from=build /app/shrtnr /

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -20,27 +19,10 @@ func main() {
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
 
-func linksHome() string {
-	linksHome := os.Getenv("LINKS_HOME")
-	if linksHome != "" {
-		return linksHome
-	}
-
-	home, err := os.UserHomeDir()
-	if err != nil {
-		panic(err)
-	}
-
-	return filepath.Join(home, "links")
-}
-
 func redirect(w http.ResponseWriter, r *http.Request) {
 	key := mux.Vars(r)["key"]
-	fmt.Println("key", key)
 
 	path := filepath.Join(home, key)
-	fmt.Println("path", path)
-
 	buf, err := ioutil.ReadFile(path)
 	if err != nil {
 		if os.IsNotExist(err) {
@@ -53,7 +35,14 @@ func redirect(w http.ResponseWriter, r *http.Request) {
 
 	url := string(buf)
 	url = strings.TrimSpace(url)
-	fmt.Println("url", url)
-
 	http.Redirect(w, r, url, http.StatusSeeOther)
+}
+
+func linksHome() string {
+	home, err := os.UserHomeDir()
+	if err != nil {
+		panic(err)
+	}
+
+	return filepath.Join(home, "links")
 }
