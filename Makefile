@@ -13,6 +13,11 @@ run: setuplo0
 	-docker rm -f $(NAME)
 	docker run --rm --name $(NAME) -d -p 127.0.0.2:80:8080 -v $(LINKS_HOME):/root/links $(IMG)
 
+.PHONY: run-local
+run-local:
+	# Try http://localhost:8080/google in a browser.
+	go run main.go
+
 .PHONY: setuplo0
 setuplo0:
 	# Make sure 127.0.0.2 is configured as a link-local address.

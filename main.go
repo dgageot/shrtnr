@@ -11,8 +11,6 @@ import (
 	"github.com/gorilla/mux"
 )
 
-var home = linksHome()
-
 func main() {
 	r := mux.NewRouter()
 	r.HandleFunc(`/{key:[a-zA-Z][a-zA-Z\-\_]*}`, redirect).Methods("HEAD", "GET")
@@ -21,8 +19,8 @@ func main() {
 
 func redirect(w http.ResponseWriter, r *http.Request) {
 	key := mux.Vars(r)["key"]
+	path := filepath.Join("links", key)
 
-	path := filepath.Join(home, key)
 	buf, err := ioutil.ReadFile(path)
 	if err != nil {
 		if os.IsNotExist(err) {
@@ -36,13 +34,4 @@ func redirect(w http.ResponseWriter, r *http.Request) {
 	url := string(buf)
 	url = strings.TrimSpace(url)
 	http.Redirect(w, r, url, http.StatusSeeOther)
-}
-
-func linksHome() string {
-	home, err := os.UserHomeDir()
-	if err != nil {
-		panic(err)
-	}
-
-	return filepath.Join(home, "links")
 }
