@@ -1,3 +1,6 @@
 # github.com/gorilla/mux v1.8.0
 ## explicit
 github.com/gorilla/mux
+# github.com/karrick/godirwalk v1.16.1
+## explicit
+github.com/karrick/godirwalk

@@ -9,13 +9,13 @@ build:
 	docker build -t $(IMG) .
 	
 .PHONY: run
-run: setuplo0
+run: setuplo0 build
 	-docker rm -f $(NAME)
-	docker run --rm --name $(NAME) -d -p 127.0.0.2:80:8080 -v $(LINKS_HOME):/root/links $(IMG)
+	docker run --rm --name $(NAME) -d -p 127.0.0.2:80:8888 -v $(LINKS_HOME):/root/links $(IMG)
 
 .PHONY: run-local
 run-local:
-	# Try http://localhost:8080/google in a browser.
+	# Try http://localhost:8888/google in a browser.
 	go run main.go
 
 .PHONY: setuplo0

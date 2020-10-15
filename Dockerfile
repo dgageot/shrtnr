@@ -4,6 +4,7 @@ COPY . ./
 RUN go build -o shrtnr
 
 FROM alpine:3.12
-EXPOSE 8080
+EXPOSE 8888
+WORKDIR /root
 ENTRYPOINT ["/shrtnr"]
 COPY --from=build /app/shrtnr /
