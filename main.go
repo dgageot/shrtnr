@@ -30,13 +30,22 @@ const nearestResultTmpl = `<!DOCTYPE html>
 
 func main() {
 	r := mux.NewRouter()
-	r.HandleFunc(`/{key:[a-zA-Z][a-zA-Z\-\_]*}`, redirect).Methods("HEAD", "GET")
+	r.HandleFunc(`/`, index).Methods("HEAD", "GET")
+	r.HandleFunc(`/{key:[a-zA-Z][a-zA-Z\-\_]*}`, link).Methods("HEAD", "GET")
 	log.Fatal(http.ListenAndServe(":8888", r))
 }
 
-func redirect(w http.ResponseWriter, r *http.Request) {
-	key := mux.Vars(r)["key"]
+func index(w http.ResponseWriter, r *http.Request) {
+	key := r.Host
+	doRedirect(key, w, r)
+}
 
+func link(w http.ResponseWriter, r *http.Request) {
+	key := mux.Vars(r)["key"]
+	doRedirect(key, w, r)
+}
+
+func doRedirect(key string, w http.ResponseWriter, r *http.Request) {
 	url, err := urlForKey(key)
 	switch {
 	case os.IsNotExist(err):
