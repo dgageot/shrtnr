@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Nearest matches</title>
+	</head>
+	<body>
+		<h1>Nearest matches:</h1>
+		{{range $k,$v := .}}
+		<p><a href="{{$v}}">go/{{$k}}</a></p>
+		{{end}}
+	</body>
+</html>

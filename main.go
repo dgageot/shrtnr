@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "embed"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -14,24 +15,13 @@ import (
 	"github.com/karrick/godirwalk"
 )
 
-const nearestResultTmpl = `<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>Nearest matches</title>
-	</head>
-	<body>
-		<h1>Nearest matches:</h1>
-		{{range $k,$v := .}}
-		<p><a href="{{$v}}">go/{{$k}}</a></p>
-		{{end}}
-	</body>
-</html>`
+//go:embed static/results.html.tmpl
+var nearestResultTmpl string
 
 func main() {
 	r := mux.NewRouter()
-	r.HandleFunc(`/`, index).Methods("HEAD", "GET")
-	r.HandleFunc(`/{key:[a-zA-Z][a-zA-Z\-\_]*}`, link).Methods("HEAD", "GET")
+	r.HandleFunc(`/`, index).Methods(http.MethodGet, http.MethodHead)
+	r.HandleFunc(`/{key:[a-zA-Z][a-zA-Z0-9\-\_]*}`, link).Methods(http.MethodGet, http.MethodHead)
 	log.Fatal(http.ListenAndServe(":8888", r))
 }
 
