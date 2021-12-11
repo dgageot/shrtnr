@@ -1,7 +1,7 @@
 FROM golang:1.17.5-alpine3.15 as build
 WORKDIR /app
 COPY . ./
-RUN go build -o shrtnr
+RUN go build -ldflags="-s -w" -o shrtnr
 
 FROM alpine:3.15.0
 EXPOSE 8888
